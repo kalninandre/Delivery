@@ -14,11 +14,17 @@
   .loading {
     text-align: center;
     align-items: center;
-    margin-top: 32px;
-
-    color:white;
-    font-size: 30px;
+    margin-top: 50px;
   }
+
+  .error-message{
+    text-align: center;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 30px;
+    color: white;
+  }
+
 
   @keyframes meals-appear {
     from {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect }from 'react';
+import { DotLoader } from 'react-spinners'; 
 
 import Card from '../UI/Card';
 
@@ -8,11 +9,15 @@ import MealItem from './MealItem';
 const AvaliableMeals = () => {
 
   const [meals, setMeals] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [httpError, setHttpError] = useState('');
 
   const Meals = async () => {
-    setIsLoading(true);
     const response = await fetch('https://restaurant-app-backend-default-rtdb.firebaseio.com/meals.json');
+
+    if (!response.ok) {
+      throw new Error('Something went wrong!');
+    }
   
     const responseData = await response.json();
   
@@ -31,14 +36,24 @@ const AvaliableMeals = () => {
   }
 
   useEffect(() => {
-    Meals()
+    
+      Meals().catch((error) => {
+        setIsLoading(false);
+        setHttpError(error.message)
+      });
   }, [])
 
   if (isLoading) {
     return (
       <div className='loading'>
-         Loading...
-    </div>
+        <DotLoader size={50} color={'white'} css={'override'}/>
+      </div>
+    )
+  }
+
+  if (httpError !== '') {
+    return (
+      <p className='error-message'>{httpError}</p>
     )
   }
 
