@@ -1,5 +1,4 @@
 import React, { useState, useEffect }from 'react';
-import { Puff } from 'react-loader-spinner';
 
 import Card from '../UI/Card';
 
@@ -37,8 +36,8 @@ const AvaliableMeals = () => {
 
   if (isLoading) {
     return (
-      <div className='flex justify-center items-center'>
-        <Puff color='#00BFFF' height={300} width={80}/> 
+      <div className='loading'>
+         Loading...
     </div>
     )
   }
