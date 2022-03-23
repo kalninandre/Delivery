@@ -1,38 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect }from 'react';
+import { Puff } from 'react-loader-spinner';
 
 import Card from '../UI/Card';
 
 import './AvaliableMeals.css'
 import MealItem from './MealItem';
 
-const meals = [
-    {
-      id: 'm1',
-      name: 'Sushi',
-      description: 'Finest fish and veggies',
-      price: 22.99,
-    },
-    {
-      id: 'm2',
-      name: 'Schnitzel',
-      description: 'A german specialty!',
-      price: 16.5,
-    },
-    {
-      id: 'm3',
-      name: 'Barbecue Burger',
-      description: 'American, raw, meaty',
-      price: 12.99,
-    },
-    {
-      id: 'm4',
-      name: 'Green Bowl',
-      description: 'Healthy...and green...',
-      price: 18.99,
-    },
-  ];
-
 const AvaliableMeals = () => {
+
+  const [meals, setMeals] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const Meals = async () => {
+    setIsLoading(true);
+    const response = await fetch('https://restaurant-app-backend-default-rtdb.firebaseio.com/meals.json');
+  
+    const responseData = await response.json();
+  
+    const meals = []
+    for (const key in responseData) {
+      meals.push({
+        id:key,
+        name: responseData[key].name,
+        description: responseData[key].description,
+        price: responseData[key].price
+      })
+    }
+  
+    setMeals(meals);
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    Meals()
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className='flex justify-center items-center'>
+        <Puff color='#00BFFF' height={300} width={80}/> 
+    </div>
+    )
+  }
+
     return (
         <section className='meals'>
           <Card>
